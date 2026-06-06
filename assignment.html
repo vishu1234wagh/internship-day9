@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input {
+            padding: 8px;
+            width: 250px;
+        }
+
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .delete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Student Registration Form</h2>
+
+    <input type="text" id="studentName" placeholder="Enter Student Name">
+    <button id="addStudent">Add Student</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Student Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="studentTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        // Empty array of objects
+        let students = [];
+
+        const studentName = document.getElementById("studentName");
+        const addStudentBtn = document.getElementById("addStudent");
+        const tableBody = document.getElementById("studentTableBody");
+
+        // Display students in table
+        function displayStudents() {
+            tableBody.innerHTML = "";
+
+            students.forEach((student, index) => {
+                let row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${student.name}</td>
+                        <td>
+                            <button class="delete-btn" onclick="deleteStudent(${student.id})">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Add Student
+        addStudentBtn.addEventListener("click", () => {
+            const name = studentName.value.trim();
+
+            if (name === "") {
+                alert("Please enter student name");
+                return;
+            }
+
+            const student = {
+                id: Date.now(),
+                name: name
+            };
+
+            students.push(student);
+
+            displayStudents();
+
+            // Clear input field
+            studentName.value = "";
+        });
+
+        // Delete Student
+        function deleteStudent(id) {
+            students = students.filter(student => student.id !== id);
+            displayStudents();
+        }
+    </script>
+
+</body>
+</html>
